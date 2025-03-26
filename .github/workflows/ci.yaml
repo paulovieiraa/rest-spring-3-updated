@@ -13,6 +13,11 @@ jobs:
       - name: Validate API
         uses: actions/checkout@v3
 
+  # Passo extra para listar os arquivos e verificar a estrutura do diretório
+      - name: List contents of the repository
+        run: |
+          ls -R $GITHUB_WORKSPACE
+
       - name: Set up Java 21 (Custom JDK)
         run: |
           curl -s https://get.sdkman.io | bash
