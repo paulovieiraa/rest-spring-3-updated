@@ -11,15 +11,14 @@ jobs:
 
     steps:
       - name: Validate API
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Java 21 (Custom JDK)
         run: |
-          curl -fsSL https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz -o jdk-21.tar.gz
-          tar -xzf jdk-21.tar.gz
-          sudo mv jdk-21 /opt/
-          sudo update-alternatives --install /usr/bin/java java /opt/jdk-21/bin/java 1
-          sudo update-alternatives --config java
+          curl -s https://get.sdkman.io | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk install java 21.0.0-oracle # Instala a versão do JDK 21 do Oracle
+          sdk use java 21.0.0-oracle  # Seleciona o JDK 21 como padrão
 
       - name: Install Gradle
         run: |
@@ -28,7 +27,7 @@ jobs:
           sdk install gradle 7.6 # Altere para a versão desejada do Gradle
 
       - name: Build the application
-        run: gradle clean build
+        run: ./gradlew clean build
 
       - name: Run tests
-        run: gradle test
+        run: ./gradlew test
