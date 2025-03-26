@@ -38,24 +38,27 @@ jobs:
           cd workflows/h2  # Navega até o diretório onde o Dockerfile está localizado
           docker build -t custom-h2 .  # Construa a imagem H2 personalizada
 
-      # Usar a imagem custom-h2 no serviço
+      # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
+      - name: Start H2 container
+        run: |
+          docker run -d \
+            --name h2 \
+            -p 9092:9092 \
+            -e SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 \
+            -e SPRING_DATASOURCE_USERNAME=sa \
+            -e SPRING_DATASOURCE_PASSWORD=password \
+            --health-cmd="curl -f http://localhost:9092/console" \
+            --health-interval=10s \
+            --health-timeout=5s \
+            --health-retries=5 \
+            custom-h2  # Inicia o container H2 a partir da imagem local
+
+      # Rodar o build e testes da aplicação
       - name: Run the application build and tests
         run: ./gradlew clean build -Dspring.config.location=classpath:/application-test.yaml
 
-    services:
-      h2:
-        image: custom-h2  # Usando a imagem que foi criada localmente
-        ports:
-          - 9092:9092
-        env:
-          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-          SPRING_DATASOURCE_USERNAME: sa
-          SPRING_DATASOURCE_PASSWORD: password
-        options: >-
-          --health-cmd="curl -f http://localhost:9092/console"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-        # Adicionando volume para garantir que o Docker tenha acesso correto
-        volumes:
-          - /tmp/h2db
+      # Parar o container H2 após os testes
+      - name: Stop H2 container
+        run: |
+          docker stop h2  # Para o container H2 após os testes
+          docker rm h2  # Remove o container
