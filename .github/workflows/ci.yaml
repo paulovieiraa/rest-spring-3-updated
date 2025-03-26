@@ -56,3 +56,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+        # Adicionando volume para garantir que o Docker tenha acesso correto
+        volumes:
+          - /tmp/h2db
