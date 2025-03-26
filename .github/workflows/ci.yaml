@@ -9,14 +9,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+#    services:
+#      h2:
+#        image: buildo/h2database
+#        env:
+#          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+#          SPRING_DATASOURCE_USERNAME: sa
+#          SPRING_DATASOURCE_PASSWORD: password
+#        ports:
+#          - 9092:9092
+#        options: >-
+#          --health-cmd="curl -f http://localhost:9092/console"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=5
+
     steps:
       - name: Validate API
         uses: actions/checkout@v3
-
-  # Passo extra para listar os arquivos e verificar a estrutura do diretório
-      - name: List contents of the repository
-        run: |
-          ls -R $GITHUB_WORKSPACE
 
       - name: Set up Java 21 (Custom JDK)
         run: |
@@ -46,9 +56,7 @@ jobs:
       # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
       - name: Start H2 container
         run: |
-          docker run -d \
-            --name h2 \
-            -p 9092:9092 \
+          docker run -d --name h2 -p 9092:9092 \
             -e SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 \
             -e SPRING_DATASOURCE_USERNAME=sa \
             -e SPRING_DATASOURCE_PASSWORD=password \
@@ -56,9 +64,8 @@ jobs:
             --health-interval=10s \
             --health-timeout=5s \
             --health-retries=5 \
-            custom-h2 && \
+            custom-h2
           sleep 10  # Espera 10 segundos para garantir que o container foi inicializado
-
 
       # Rodar o build e testes da aplicação
       - name: Run the application build and tests
