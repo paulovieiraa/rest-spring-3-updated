@@ -35,7 +35,7 @@ jobs:
       # Construir a imagem custom-h2 a partir do Dockerfile
       - name: Build H2 Docker image
         run: |
-          cd workflows/h2  # Navega até o diretório onde o Dockerfile está localizado
+          cd $GITHUB_WORKSPACE/workflows/h2  # Navega até o diretório correto
           docker build -t custom-h2 .  # Construa a imagem H2 personalizada
 
       # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
