@@ -9,21 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      h2:
-        image: custom-h2
-        env:
-          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-          SPRING_DATASOURCE_USERNAME: sa
-          SPRING_DATASOURCE_PASSWORD: password
-        ports:
-          - 9092:9092
-        options: >-
-          --health-cmd="curl -f http://localhost:9092/console"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
       - name: Validate API
         uses: actions/checkout@v3
@@ -34,11 +19,6 @@ jobs:
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdk install java 21.0.2-open
           sdk use java 21.0.2-open
-
-      - name: Build H2 Docker image
-        run: |
-          cd workflows/h2  # Navega até o diretório onde o Dockerfile está localizado
-          docker build -t custom-h2 .
 
       - name: Set environment for tests
         run: |
@@ -52,5 +32,27 @@ jobs:
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdk install gradle 7.6
 
-      - name: Build the application
+      # Construir a imagem custom-h2 a partir do Dockerfile
+      - name: Build H2 Docker image
+        run: |
+          cd workflows/h2  # Navega até o diretório onde o Dockerfile está localizado
+          docker build -t custom-h2 .  # Construa a imagem H2 personalizada
+
+      # Usar a imagem custom-h2 no serviço
+      - name: Run the application build and tests
         run: ./gradlew clean build -Dspring.config.location=classpath:/application-test.yaml
+
+    services:
+      h2:
+        image: custom-h2  # Usando a imagem que foi criada localmente
+        ports:
+          - 9092:9092
+        env:
+          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+          SPRING_DATASOURCE_USERNAME: sa
+          SPRING_DATASOURCE_PASSWORD: password
+        options: >-
+          --health-cmd="curl -f http://localhost:9092/console"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
