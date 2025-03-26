@@ -9,3 +9,8 @@ spring:
   h2:
     console:
       enabled: true
+
+logging:
+  level:
+    org.flywaydb: DEBUG
+    org.springframework.jdbc.datasource.DriverManagerDataSource: DEBUG

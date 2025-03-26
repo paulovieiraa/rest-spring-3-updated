@@ -9,21 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-#    services:
-#      h2:
-#        image: buildo/h2database
-#        env:
-#          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-#          SPRING_DATASOURCE_USERNAME: sa
-#          SPRING_DATASOURCE_PASSWORD: password
-#        ports:
-#          - 9092:9092
-#        options: >-
-#          --health-cmd="curl -f http://localhost:9092/console"
-#          --health-interval=10s
-#          --health-timeout=5s
-#          --health-retries=5
-
     steps:
       - name: Validate API
         uses: actions/checkout@v3
@@ -35,6 +20,16 @@ jobs:
           sdk install java 21.0.2-open
           sdk use java 21.0.2-open
 
+      - name: Install Gradle
+        run: |
+          curl -s https://get.sdkman.io | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk install gradle 7.6
+
+    ####################################################
+    ######## Criando H2 em memoria, para testes ########
+    ####################################################
+
       - name: Set environment for tests
         run: |
           echo "SPRING_PROFILES_ACTIVE=test" >> $GITHUB_ENV
@@ -42,22 +37,11 @@ jobs:
           echo "SPRING_DATASOURCE_USERNAME=sa" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_PASSWORD=password" >> $GITHUB_ENV
 
-      - name: Install Gradle
-        run: |
-          curl -s https://get.sdkman.io | bash
-          source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install gradle 7.6
-
       # Construir a imagem custom-h2 a partir do Dockerfile
       - name: Build H2 Docker image
         run: |
           cd $GITHUB_WORKSPACE/src/main/resources/h2  # Caminho correto para o diretório com "dockerfile" em minúsculas
           docker build -t custom-h2 .  # Construa a imagem H2 personalizada
-
-      - name: Check environment variables
-        run: |
-          echo "SPRING_DATASOURCE_URL: $SPRING_DATASOURCE_URL"
-          echo "SPRING_DATASOURCE_USERNAME: $SPRING_DATASOURCE_USERNAME"
 
       # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
       - name: Start H2 container
@@ -72,6 +56,10 @@ jobs:
           --health-retries=5 \
           custom-h2
           sleep 10
+
+      # Executar a migração do Flyway
+      - name: Run Flyway Migrate
+        run: ./gradlew flywayMigrate
 
       # Rodar o build e testes da aplicação
       - name: Run the application build and tests
