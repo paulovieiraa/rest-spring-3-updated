@@ -11,7 +11,7 @@ jobs:
 
     services:
       h2:
-        image: h2database/h2:latest
+        image: h2database/h2:1.4.200
         env:
           SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
           SPRING_DATASOURCE_USERNAME: sa
