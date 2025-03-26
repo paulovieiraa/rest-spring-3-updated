@@ -56,7 +56,8 @@ jobs:
       # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
       - name: Start H2 container
         run: |
-          docker images
+          echo "SPRING_DATASOURCE_URL: $SPRING_DATASOURCE_URL"
+          echo "SPRING_DATASOURCE_USERNAME: $SPRING_DATASOURCE_USERNAME"
           docker run -d --name h2 -p 9092:9092 \
             -e SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 \
             -e SPRING_DATASOURCE_USERNAME=sa \
