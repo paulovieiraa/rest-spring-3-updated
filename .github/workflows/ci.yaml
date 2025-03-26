@@ -38,6 +38,7 @@ jobs:
       - name: Set environment for tests
         run: |
           echo "SPRING_PROFILES_ACTIVE=test" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_USERNAME=sa" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_PASSWORD=password" >> $GITHUB_ENV
 
@@ -53,21 +54,24 @@ jobs:
           cd $GITHUB_WORKSPACE/src/main/resources/h2  # Caminho correto para o diretório com "dockerfile" em minúsculas
           docker build -t custom-h2 .  # Construa a imagem H2 personalizada
 
-      # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
-      - name: Start H2 container
+      - name: Check environment variables
         run: |
           echo "SPRING_DATASOURCE_URL: $SPRING_DATASOURCE_URL"
           echo "SPRING_DATASOURCE_USERNAME: $SPRING_DATASOURCE_USERNAME"
+
+      # Rodar o container H2 manualmente com as variáveis de ambiente e configuração de portas
+      - name: Start H2 container
+        run: |
           docker run -d --name h2 -p 9092:9092 \
-            -e SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 \
-            -e SPRING_DATASOURCE_USERNAME=sa \
-            -e SPRING_DATASOURCE_PASSWORD=password \
-            --health-cmd="curl -f http://localhost:9092/console" \
-            --health-interval=10s \
-            --health-timeout=5s \
-            --health-retries=5 \
-            custom-h2
-          sleep 10  # Espera 10 segundos para garantir que o container foi inicializado
+          -e SPRING_DATASOURCE_URL=$SPRING_DATASOURCE_URL \
+          -e SPRING_DATASOURCE_USERNAME=$SPRING_DATASOURCE_USERNAME \
+          -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
+          --health-cmd="curl -f http://localhost:9092/console" \
+          --health-interval=10s \
+          --health-timeout=5s \
+          --health-retries=5 \
+          custom-h2
+          sleep 10
 
       # Rodar o build e testes da aplicação
       - name: Run the application build and tests
