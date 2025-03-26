@@ -47,16 +47,17 @@ jobs:
       - name: Start H2 container
         run: |
           docker run -d \
-            --name h2 \
-            -p 9092:9092 \
-            -e SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 \
-            -e SPRING_DATASOURCE_USERNAME=sa \
-            -e SPRING_DATASOURCE_PASSWORD=password \
-            --health-cmd="curl -f http://localhost:9092/console" \
-            --health-interval=10s \
-            --health-timeout=5s \
-            --health-retries=5 \
-            custom-h2  # Inicia o container H2 a partir da imagem local
+          --name h2 \
+          -p 9092:9092 \
+          -e SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 \
+          -e SPRING_DATASOURCE_USERNAME=sa \
+          -e SPRING_DATASOURCE_PASSWORD=password \
+          --health-cmd="curl -f http://localhost:9092/console" \
+          --health-interval=10s \
+          --health-timeout=5s \
+          --health-retries=5 \
+          custom-h2
+          sleep 10  # Espera 10 segundos para garantir que o container foi inicializado
 
       # Rodar o build e testes da aplicação
       - name: Run the application build and tests
