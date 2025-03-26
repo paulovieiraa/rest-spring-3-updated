@@ -17,8 +17,8 @@ jobs:
         run: |
           curl -s https://get.sdkman.io | bash
           source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install java 21.0.0-oracle # Instala a versão do JDK 21 do Oracle
-          sdk use java 21.0.0-oracle  # Seleciona o JDK 21 como padrão
+          sdk install java 21-open  # Instala o OpenJDK 21
+          sdk use java 21-open  # Seleciona o OpenJDK 21 como padrão
 
       - name: Install Gradle
         run: |
