@@ -22,5 +22,3 @@
   - Swagger
   - Flyway
   - DockerFile
-
-Teste github Actions
