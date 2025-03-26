@@ -1,5 +1,8 @@
-package br.com.pvprojects.restspring3.util;
+package br.com.pvprojects.restspring3.infrastructure.config;
 
+import br.com.pvprojects.restspring3.util.Util;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -18,7 +21,7 @@ public class ObjectMapperConfig {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setTimeZone(TimeZone.getTimeZone(Util.TIME_ZONE));
         mapper.registerModule(new JavaTimeModule());
-//        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         return mapper;
     }
 }

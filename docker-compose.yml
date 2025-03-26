@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17.4
+    container_name: 'postgres_rest_spring_boot_3_4_3'
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: rest
+      POSTGRES_USER: rest
+      POSTGRES_PASSWORD: 1010231010
+      MAX_CONNECTIONS: 300
+      TZ: 'America/Sao_Paulo'

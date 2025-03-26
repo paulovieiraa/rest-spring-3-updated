@@ -1,0 +1,29 @@
+spring:
+
+  jackson:
+    time-zone: 'America/Sao_Paulo'
+
+  application:
+    name: Spring Boot 3.4.3 - Updated
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rest
+    username: rest
+    password: 1010231010
+    driver-class-name: org.postgresql.Driver
+    jpa:
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+          hbm2ddl:
+            auto: update
+
+microservices:
+  document-retry:
+    max-attempts: 3
+    delay-in-ms: 5000
+
+logging:
+  level:
+    br.com.pvprojects: INFO
