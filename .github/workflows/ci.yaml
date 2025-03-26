@@ -9,6 +9,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      h2:
+        image: openjdk:21-jdk-slim
+        env:
+          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+          SPRING_DATASOURCE_USERNAME: sa
+          SPRING_DATASOURCE_PASSWORD: password
+        ports:
+          - 9092:9092
+        options: >-
+          --health-cmd="curl -f http://localhost:9092/console"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Validate API
         uses: actions/checkout@v3
@@ -17,17 +32,20 @@ jobs:
         run: |
           curl -s https://get.sdkman.io | bash
           source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install java 21.0.2-open  # Instala o OpenJDK 21
-          sdk use java 21.0.2-open  # Seleciona o OpenJDK 21 como padrão
+          sdk install java 21.0.2-open
+          sdk use java 21.0.2-open
+
+      - name: Set environment for tests
+        run: |
+          echo "SPRING_PROFILES_ACTIVE=test" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_USERNAME=sa" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_PASSWORD=password" >> $GITHUB_ENV
 
       - name: Install Gradle
         run: |
           curl -s https://get.sdkman.io | bash
           source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install gradle 7.6 # Altere para a versão desejada do Gradle
+          sdk install gradle 7.6
 
       - name: Build the application
-        run: ./gradlew clean build
-
-      - name: Run tests
-        run: ./gradlew test
+        run: ./gradlew clean build -Dspring.config.location=classpath:/application-test.yaml
