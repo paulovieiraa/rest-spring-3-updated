@@ -11,7 +11,7 @@ jobs:
 
     services:
       h2:
-        image: h2database/h2:1.4.200
+        image: custom-h2
         env:
           SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
           SPRING_DATASOURCE_USERNAME: sa
@@ -34,6 +34,11 @@ jobs:
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdk install java 21.0.2-open
           sdk use java 21.0.2-open
+
+      - name: Build H2 Docker image
+        run: |
+          cd workflows/h2  # Navega até o diretório onde o Dockerfile está localizado
+          docker build -t custom-h2 .
 
       - name: Set environment for tests
         run: |
