@@ -1,12 +1,11 @@
 package br.com.pvprojects.restspring3.api.v1.model.input;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
-
 
 @Data
 @Builder
@@ -14,23 +13,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @NoArgsConstructor
 public class PersonInput {
 
-    @Schema(example = "Paulo")
-    private String firstName;
+  @Schema(example = "Paulo")
+  private String firstName;
 
-    @Schema(example = "Vieira")
+  @Schema(example = "Vieira")
+  private String lastName;
 
-    private String lastName;
+  @Size(min = 11, max = 14)
+  @Schema(example = "870.194.410-09")
+  private String cpf;
 
-    @Size(min = 11, max = 14)
-    @Schema(example = "870.194.410-09")
-    private String cpf;
+  @Schema(example = "1993-04-22")
+  private String birthDate;
 
-    @Schema(example = "1993-04-22")
-    private String birthDate;
+  @Schema(example = "0")
+  private Integer gender;
 
-    @Schema(example = "0")
-    private Integer gender;
-
-    @Schema(example = "email@gmail.com")
-    private String email;
+  @Schema(example = "email@gmail.com")
+  private String email;
 }
