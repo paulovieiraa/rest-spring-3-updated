@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS person (
-    id UUID DEFAULT gen_random_uuid () NOT NULL,
+    id UUID DEFAULT ${uuid_function} NOT NULL,
     first_name varchar(250) NOT NULL,
     last_name varchar(250) NOT NULL,
     cpf varchar (11) UNIQUE NOT NULL,

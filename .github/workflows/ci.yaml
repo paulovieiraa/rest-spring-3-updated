@@ -1,0 +1,35 @@
+name: Build API
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate API
+        uses: actions/checkout@v3
+
+      - name: Set up Java 21 (Custom JDK)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Install Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{runner.os}}-gradle-${{hashFiles('**/*.gradle*', '**/gradle-wrapper.properties')}}
+          restore-keys: | 
+            ${{runner.os}}-gradle-
+
+      - name: Build and Test
+        run: ./gradlew clean build
+        env:
+          SPRING_PROFILES_ACTIVE: test

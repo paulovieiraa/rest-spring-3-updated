@@ -17,10 +17,9 @@
   - Feign
   - Retry
   - Jacoco
+  - Logs
   - Cors
   - JWT
   - Swagger
   - Flyway
   - DockerFile
-
-Teste github Actions
