@@ -7,7 +7,6 @@ plugins {
     id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
-//    id 'org.flywaydb.flyway' version '9.16.1'
 }
 
 group = 'br.com.pvprojects'
@@ -52,27 +51,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
-//flyway {
-//    if (project.hasProperty('test')) {
-//        // Ambiente de teste (H2)
-//        url = 'jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1'
-//        user = 'sa'
-//        password = 'password'
-//    } else {
-//        url = 'jdbc:postgresql://localhost:5432/rest'
-//        user = 'rest'
-//        password = '1010231010'
-//    }
-//}
-//
-//tasks.named("flywayMigrate") {
-//    description = 'Executa a migração do banco de dados usando o Flyway'
-//    group = 'Flyway'
-//    doLast {
-//        flywayMigrate.execute()
-//    }
-//}
 
 tasks.named('test') {
     useJUnitPlatform()
