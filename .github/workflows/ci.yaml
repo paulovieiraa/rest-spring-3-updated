@@ -29,7 +29,13 @@ jobs:
           restore-keys: | 
             ${{runner.os}}-gradle-
 
-      - name: Build and Test
-        run: ./gradlew clean build
+      - name: Build
+        run: ./gradlew clean build --no-daemon
+
+      - name: Run Spotless Check
+        run: ./gradlew spotlessCheck --no-daemon
+
+      - name: Tests
+        run: ./gradlew test --no-daemon
         env:
           SPRING_PROFILES_ACTIVE: test
