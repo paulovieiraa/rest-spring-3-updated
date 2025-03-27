@@ -17,6 +17,7 @@
   - Feign
   - Retry
   - Jacoco
+  - Logs
   - Cors
   - JWT
   - Swagger
