@@ -9,15 +9,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("API REST - Spring Boot 3.4.3")
-                        .description("Conceitos atualizados com Spring Boot 3.4.3")
-                        .version("1.0.0")
-                        .contact(new Contact().name("Dev")
-                                .email("EMAIL@gmail.com")));
-//                .addSecurityItem(new SecurityRequirement().addList("ApiKeyAuth", new ArrayList<>()));
-    }
+  @Bean
+  public OpenAPI openAPI() {
+    return new OpenAPI()
+        .info(
+            new Info()
+                .title("API REST - Spring Boot 3.4.3")
+                .description("Conceitos atualizados com Spring Boot 3.4.3")
+                .version("1.0.0")
+                .contact(new Contact().name("Dev").email("EMAIL@gmail.com")));
+    //                .addSecurityItem(new SecurityRequirement().addList("ApiKeyAuth", new
+    // ArrayList<>()));
+  }
 }

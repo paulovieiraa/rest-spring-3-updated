@@ -14,14 +14,14 @@ import org.springframework.retry.support.RetryTemplate;
 @RequiredArgsConstructor
 public class RetryConfiguration {
 
-    private final MicroserviceSpringRetryProperties microserviceSpringRetryProperties;
+  private final MicroserviceSpringRetryProperties microserviceSpringRetryProperties;
 
-    @Bean
-    public RetryTemplate DocumentImageRetryTemplate() {
-        return RetryTemplate.builder()
-                .maxAttempts(microserviceSpringRetryProperties.getMaxAttempts())
-                .fixedBackoff(microserviceSpringRetryProperties.getDelayInMs())
-                .retryOn(MissingAttributesException.class)
-                .build();
-    }
+  @Bean
+  public RetryTemplate DocumentImageRetryTemplate() {
+    return RetryTemplate.builder()
+        .maxAttempts(microserviceSpringRetryProperties.getMaxAttempts())
+        .fixedBackoff(microserviceSpringRetryProperties.getDelayInMs())
+        .retryOn(MissingAttributesException.class)
+        .build();
+  }
 }

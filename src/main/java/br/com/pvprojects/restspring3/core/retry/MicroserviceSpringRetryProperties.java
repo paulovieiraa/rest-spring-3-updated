@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "microservices.document-retry")
 public class MicroserviceSpringRetryProperties {
 
-    private Integer maxAttempts;
-    private Long delayInMs;
+  private Integer maxAttempts;
+  private Long delayInMs;
 }
