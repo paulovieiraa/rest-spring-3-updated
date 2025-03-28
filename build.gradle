@@ -47,8 +47,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly group: 'org.flywaydb', name: 'flyway-database-postgresql', version: '11.3.4'
+    runtimeOnly group: 'org.flywaydb', name: 'flyway-database-postgresql', version: '11.5.0'
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.flywaydb:flyway-database-db2:11.5.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
