@@ -16,6 +16,7 @@ spring:
     enabled: true
     placeholders:
       uuid_function: RANDOM_UUID()
+    baseline-on-migrate: true
 
 logging:
   level:
