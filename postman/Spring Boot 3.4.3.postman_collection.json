@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "bd9abbc9-8116-482e-9b8e-ae1fe6a67901",
+		"name": "Spring Boot 3.4.3 - Updated",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "902075"
+	},
+	"item": [
+		{
+			"name": "Create Person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function(){",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"const json = pm.response.json();",
+							"pm.environment.set(\"personId\", json.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Paulo\",\n    \"lastName\": \"Vieira\",\n    \"cpf\": \"870.194.410-09\",\n    \"gender\": 0,\n    \"birthDate\": \"1993-04-22\",\n    \"email\": \"paulo.vieiraa@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/person",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "People",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/person",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Person by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/person/{{personId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"person",
+						"{{personId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Person by Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/person/{{personId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"person",
+						"{{personId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
