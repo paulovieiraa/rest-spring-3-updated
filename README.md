@@ -13,13 +13,13 @@
 
 
 - Ferramentas e recursos
-  - GitHub Actions
+  - GitHub Actions ✅
   - Feign
   - Retry
   - Jacoco
   - Logs
   - Cors
   - JWT
-  - Swagger
-  - Flyway
+  - Swagger ✅
+  - Flyway ✅
   - DockerFile
