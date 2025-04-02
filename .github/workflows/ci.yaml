@@ -31,11 +31,13 @@ jobs:
 
       - name: Build
         run: ./gradlew clean build --no-daemon
+        env:
+          SPRING_PROFILES_ACTIVE: test
 
       - name: Run Spotless Check
         run: ./gradlew spotlessCheck --no-daemon
 
-#      - name: Tests
-#        run: ./gradlew test --no-daemon
-#        env:
-#          SPRING_PROFILES_ACTIVE: test
+      - name: Tests
+        run: ./gradlew test --no-daemon
+        env:
+          SPRING_PROFILES_ACTIVE: test
