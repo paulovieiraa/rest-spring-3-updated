@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
 CREATE TABLE IF NOT EXISTS person (
     id UUID DEFAULT ${uuid_function} NOT NULL,
     first_name varchar(250) NOT NULL,
