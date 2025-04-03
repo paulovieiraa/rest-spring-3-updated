@@ -23,3 +23,6 @@
   - Swagger ✅
   - Flyway ✅
   - DockerFile
+  - K8S
+  - Cache
+  - SonarQube
